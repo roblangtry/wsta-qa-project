@@ -9,7 +9,7 @@ def main():
     dev_data = load_json_file(DEV_FILE)
     test_data = load_json_file(TEST_FILE)
     train_data = load_json_file(TRAIN_FILE)
-    model = BasicModel(get_documents(dev_data))
+    model = BasicModel(get_documents(dev_data), get_answers_and_queries(train_data))
     # now run a simple test
     correct = 0
     total = 0
