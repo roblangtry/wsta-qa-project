@@ -15,7 +15,7 @@ with open('/Users/abhisheksirohi/Desktop/training.json') as data_file:
 def extract_term_freqs(doc):
     tfs = Counter()
     for token in nltk.word_tokenize(doc):
-        if token not in stopwords: # 'in' and 'not in' operations are much faster over sets that lists
+        if token not in stopwords:
             tfs[stemmer.stem(token.lower())] += 1
     return tfs
 
@@ -38,6 +38,7 @@ def query_vsm(query, index, k=10):
 
 
 i = 0
+cSentence = []
 for sentences in data:
     i+= 1
     doc = sentences['sentences']
@@ -45,46 +46,46 @@ for sentences in data:
     for sent in doc:
         term_freqs = extract_term_freqs(sent)
         doc_term_freqs[doc.index(sent)] = term_freqs
-    M = len(doc_term_freqs) 
+    M = len(doc_term_freqs)
 
     doc_freqs = compute_doc_freqs(doc_term_freqs)
 
-    vsm_inverted_index = defaultdict(list)
+    invertedIndex = defaultdict(list)
     for docid, term_freqs in doc_term_freqs.items():
         N = sum(term_freqs.values())
         length = 0
 
-        # find tf*idf values and accumulate sum of squares
+        # TF-IDF values
         tfidf_values = []
         for term, count in term_freqs.items():
             tfidf = float(count) / N * log(M / float(doc_freqs[term]))
             tfidf_values.append((term, tfidf))
             length += tfidf ** 2
 
-        # normalise documents by length and insert into index
+        # Normalize documents by length and insert them into index
         length = length ** 0.5
         for term, tfidf in tfidf_values:
             # note the inversion of the indexing, to be term -> (doc_id, score)
             if length != 0:
-                vsm_inverted_index[term].append([docid, tfidf / length])
+                invertedIndex[term].append([docid, tfidf / length])
 
-    # ensure posting lists are in sorted order (less important here cf above)
     a = []
-    totalQuestions = 0
-    correctSentence = 0
-    cSentence = []
+    totQuestions = 0
+    correctOP = 0
     for qa in sentences['qa']:
         query = ""
         for token in nltk.word_tokenize(qa['question']):
-            if token not in stopwords:  # 'in' and 'not in' operations are much faster over sets that lists
+            if token not in stopwords:
                 query = query + ' ' + token
-        result = query_vsm([stemmer.stem(term.lower()) for term in query.split()], vsm_inverted_index)
-        totalQuestions += 1
+        result = query_vsm([stemmer.stem(term.lower()) for term in query.split()], invertedIndex)
+        totQuestions += 1
         if len(result) > 0:
             bestSentence = result[0][0]
             if qa['answer_sentence'] == bestSentence:
-                correctSentence += 1
-        cSentence.append(sentences['sentences'][result[0][0]])
-print("The accuracy on train set is", (correctSentence/float(totalQuestions)))
+                correctOP += 1
+        cSentence.append((query,sentences['sentences'][result[0][0]]))
 
-print(cSentence)
+print("The accuracy on train set is", (correctOP/float(totQuestions)))
+
+#The list with the questions and answers in a tuple form
+print(len(cSentence)) #(Question,Answer)
