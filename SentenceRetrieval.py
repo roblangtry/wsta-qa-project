@@ -8,9 +8,10 @@ from collections import defaultdict, Counter
 
 stemmer = nltk.stem.PorterStemmer()
 stopwords = set(nltk.corpus.stopwords.words('english'))
+TRAIN_FILE = 'data/QA_train.json'
 
-with open('/Users/abhisheksirohi/Desktop/training.json') as data_file:
-    data = json.load(data_file)
+with open(TRAIN_FILE) as data:
+    data = json.load(data)
 
 def extract_term_freqs(doc):
     tfs = Counter()
