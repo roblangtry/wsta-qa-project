@@ -88,4 +88,7 @@ for sentences in data:
 print("The accuracy on train set is", (correctOP/float(totQuestions)))
 
 #The list with the questions and answers in a tuple form
-print(len(cSentence)) #(Question,Answer)
+#cSentence is the list which contains answers along with the answers in the form, (Question,Answer)
+print(len(cSentence))
+for i in cSentence:
+    print((i)) 
