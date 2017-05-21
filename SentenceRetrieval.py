@@ -84,7 +84,7 @@ for sentences in data:
             bestSentence = result[0][0]
             if qa['answer_sentence'] == bestSentence:
                 correctOP += 1
-        cSentence.append((query,sentences['sentences'][result[0][0]]))
+                cSentence.append((query,sentences['sentences'][result[0][0]]))
 
 print("The accuracy on train set is", (correctOP/float(totQuestions)))
 
