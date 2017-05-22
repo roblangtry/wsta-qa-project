@@ -2,7 +2,8 @@ from entity_tagger import BasicEntityTagger
 from answer_ranker import BasicAnswerRanker
 from sentence_retrieval import BasicSentenceRetriever
 import re
-class BasicModel:
+
+class BasicModel(object):
 
     def __init__(self, documents, qas):
         print 'Building Model ... ',
@@ -71,4 +72,3 @@ class BasicModel:
         entity_list = self.entity_extraction(sentences)
         ranked_answers = self.answer_ranking(query, entity_list)
         return self.select_answer(ranked_answers)
-
