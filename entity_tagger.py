@@ -21,7 +21,7 @@ class BasicEntityTagger:
 
     def parse_sentence(self, sentence):
         replaced = re.sub('[,.[\]();:?!]', ' ', sentence)
-        replaced = re.sub('[^a-zA-Z0-9 ]', '', replaced)
+        replaced = re.sub('[^a-zA-Z0-9 -]', '', replaced)
         return replaced
 
     def split_sentence(self, sentence):
