@@ -1,29 +1,25 @@
 from entity_tagger import BasicEntityTagger
 from answer_ranker import BasicAnswerRanker
+from sentence_retrieval import BasicSentenceRetriever
 import re
 class BasicModel:
 
     def __init__(self, documents, qas):
         print 'Building Model ... ',
         self.documents = documents
+        print 'Initialising Sentence Retreiver ... ',
+        self.retreiver = BasicSentenceRetriever(documents[0])
         print 'Initialising Sentence Tagger ... ',
         self.tagger = BasicEntityTagger(documents)
         print 'Initialising Answer Ranker ... ',
         self.ranker = BasicAnswerRanker(documents, qas)
         print 'Done!'
 
-    def sentence_retrival(self, query, documents):
+    def sentence_retrieval(self, query, documents):
         # documents will be a list each element of that list will in turn be a list of sentences from a wikipedia article
         # query will be a string
         # function should return a single sentence for each wikipedia article
-        sentences = []
-        #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!#
-        #                              #
-        # The following is test code!! #
-        #                              #
-        #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!#
-        for document in self.documents:
-            sentences.append(document[0])
+        sentences = [self.retreiver.lookup(query)]
         # TODO code this
         assert(len(documents) == len(sentences))
         return sentences
@@ -63,12 +59,15 @@ class BasicModel:
         # The following is test code!! #
         #                              #
         #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!#
-        answer = ranked_answers[0]
+        if len(ranked_answers) > 0:
+            answer = ranked_answers[0]
+        else:
+            answer = 'Unknown'
         # TODO code this
         return answer
 
     def answer_query(self, query):
-        sentences = self.sentence_retrival(query, self.documents)
+        sentences = self.sentence_retrieval(query, self.documents)
         entity_list = self.entity_extraction(sentences)
         ranked_answers = self.answer_ranking(query, entity_list)
         return self.select_answer(ranked_answers)
