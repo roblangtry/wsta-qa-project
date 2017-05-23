@@ -1,4 +1,5 @@
 import json
+import sys
 from basic_model import BasicModel
 DEV_FILE = 'data/QA_dev.json'
 TEST_FILE = 'data/QA_test.json'
@@ -11,25 +12,43 @@ def main():
     train_data = load_json_file(TRAIN_FILE)
     #model = BasicModel(get_documents(dev_data), get_answers_and_queries(train_data))
     # now run a simple test
-    correct = 0
-    total = 0
-    n = len(dev_data)
-    m = 1
-    for obj in dev_data:
-        print m,
-        print '/',
-        print n
-        m += 1
-        model = BasicModel([obj['sentences']], [])
-        for o2 in obj['qa']:
-            query = o2['question']
-            answer = o2['answer']
-            model_answer = model.answer_query(query)
-            total += 1
-            if model_answer == answer:
-                correct += 1
-    print 'Precision on dev data: ',
-    print '%.2f' % (float(correct) / float(total) * float(100))
+    if sys.argv[1] == '-t':
+        answer_file = open('answers.csv', 'w')
+        answer_file.write('id,answer\n')
+        n = len(test_data)
+        m = 1
+        for obj in test_data:
+            print m,
+            print '/',
+            print n
+            m += 1
+            model = BasicModel([obj['sentences']], [])
+            for o2 in obj['qa']:
+                query = o2['question']
+                query_id = o2['id']
+                model_answer = model.answer_query(query)
+                answer_file.write('%s,%s\n' % (str(query_id), model_answer))
+
+    else:
+        correct = 0
+        total = 0
+        n = len(dev_data)
+        m = 1
+        for obj in dev_data:
+            print m,
+            print '/',
+            print n
+            m += 1
+            model = BasicModel([obj['sentences']], [])
+            for o2 in obj['qa']:
+                query = o2['question']
+                answer = o2['answer']
+                model_answer = model.answer_query(query)
+                total += 1
+                if model_answer == answer:
+                    correct += 1
+        print 'Precision on dev data: ',
+        print '%.2f' % (float(correct) / float(total) * float(100))
 
 
 def load_json_file(filename):
