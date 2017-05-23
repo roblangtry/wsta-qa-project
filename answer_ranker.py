@@ -80,7 +80,7 @@ class BasicAnswerRanker(object):
             for tup in tagged:
                 tag = tup[1]
                 word = tup[0]
-                if tag in CLOSED_CLASS_TAGS:
+                if tag not in CLOSED_CLASS_TAGS:
                     closed.append(word)
             self.pos_cache[query] = closed
             closed_words = closed
