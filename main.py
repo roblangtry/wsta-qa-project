@@ -1,6 +1,6 @@
 import json
 import sys
-from basic_model import BasicModel
+from basic_model import BasicModel, clean_answer
 DEV_FILE = 'data/QA_dev.json'
 TEST_FILE = 'data/QA_test.json'
 TRAIN_FILE = 'data/QA_train.json'
@@ -45,7 +45,7 @@ def main():
                 answer = o2['answer']
                 model_answer = model.answer_query(query)
                 total += 1
-                if model_answer == answer:
+                if model_answer == clean_answer(answer):
                     correct += 1
         print 'Precision on dev data: ',
         print '%.2f' % (float(correct) / float(total) * float(100))
