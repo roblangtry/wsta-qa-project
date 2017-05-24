@@ -51,7 +51,9 @@ class BasicSentenceRetriever:
             # TF-IDF values
             tfidf_values = []
             for term, count in term_freqs.items():
-                tfidf = float(count) / N * log(M / float(doc_freqs[term]))
+                tf = float(0.5) + float(0.5) * (float(count) / float(term_freqs.most_common(1)[0][1]))
+                idf = log(M / float(doc_freqs[term]))
+                tfidf = tf * idf
                 tfidf_values.append((term, tfidf))
                 length += tfidf ** 2
             # Normalize documents by length and insert them into index
