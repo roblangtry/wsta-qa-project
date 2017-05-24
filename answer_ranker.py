@@ -80,7 +80,7 @@ class BasicAnswerRanker(object):
             for tup in tagged:
                 tag = tup[1]
                 word = tup[0]
-                if tag in CLOSED_CLASS_TAGS:
+                if tag not in CLOSED_CLASS_TAGS:
                     closed.append(word)
             self.pos_cache[query] = closed
             closed_words = closed
@@ -118,7 +118,7 @@ class BasicAnswerRanker(object):
 
     def break_query(self, query):
         parsed_query = re.sub('[,.[\]();:?!]', ' ', query)
-        parsed_query = re.sub('[^a-zA-Z0-9 ]', '', parsed_query)
+        parsed_query = re.sub('[^a-zA-Z0-9 -]', '', parsed_query)
         return parsed_query.split()
 def content_words_appear_in_query(entry, query):
     content_words = map(lambda x: x[1], entry[1])
@@ -135,22 +135,38 @@ class BasicQueryClassifier:
         self.yes = 0
         self.no = 0
         self.rules = [
-            ('person','PERSON'),
+            ('person', 'PERSON'),
             ('location', 'LOCATION'),
-            ('number','NUMBER'),
-            ('who', 'PERSON'),
-            ('why', 'OTHER'),
-            ('are', 'OTHER'),
-            ('from', 'LOCATION'),
-            ('country', 'LOCATION'),
+            ('number', 'NUMBER'),
+            ('who','PERSON'),
+            ('name', 'PERSON'),
             ('where', 'LOCATION'),
+            ('located?', 'LOCATION'),
+            ('when was','NUMBER'),
+            ('how many','NUMBER'),
+            ('what year','NUMBER'),
+            ('which year','NUMBER'),
+            ('percentage', 'NUMBER'),
+            ('date', 'NUMBER'),
             ('when', 'NUMBER'),
-            ('many', 'NUMBER'),
-            ('year', 'NUMBER'),
-            ('decade', 'NUMBER'),
-            ('time', 'NUMBER'),
-            ('cost', 'NUMBER'),
-            ('population', 'NUMBER')
+            ('how much', 'NUMBER'),
+            ('in what century did', 'NUMBER'),
+            ('in which century did', 'NUMBER'),
+            ('what is the average', 'NUMBER'),
+            ('what countries', 'LOCATION'),
+            ('what country', 'LOCATION'),
+            ('which person', 'PERSON'),
+            ('what person', 'PERSON'),
+            ('which time', 'NUMBER'),
+            ('what time', 'NUMBER'),
+            ('which countries', 'LOCATION'),
+            ('which country', 'LOCATION'),
+            ('territory', 'LOCATION'),
+            ('country', 'LOCATION'),
+            ('countries', 'LOCATION'),
+            ('how', 'OTHER'),
+            ('what', 'OTHER'),
+            ('which','OTHER'),
         ]
     def classify(self, query):
         for rule in self.rules:
