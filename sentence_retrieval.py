@@ -61,13 +61,12 @@ class BasicSentenceRetriever:
                 if length != 0:
                     self.invertedIndex[term].append([docid, tfidf / length])
 
-    def lookup(self, user_query):
+    def lookup(self, user_query, backoff=0):
         query = []
         for token in nltk.word_tokenize(user_query):
             if token not in stopwords:
                 query.append(stemmer.stem(token.lower()))
         result = query_vsm(query, self.invertedIndex)
-        try:
-            return self.documents[result[0][0]]
-        except:
-            return self.documents[0]
+        if len(result) > backoff:
+            return self.documents[result[backoff][0]]
+        return self.documents[backoff - len(result)]

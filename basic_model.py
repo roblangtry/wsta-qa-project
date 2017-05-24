@@ -15,11 +15,11 @@ class BasicModel:
         self.ranker = BasicAnswerRanker(documents, qas)
         #print 'Done!'
 
-    def sentence_retrieval(self, query, documents):
+    def sentence_retrieval(self, query, documents, backoff=0):
         # documents will be a list each element of that list will in turn be a list of sentences from a wikipedia article
         # query will be a string
         # function should return a single sentence for each wikipedia article
-        sentences = [self.retreiver.lookup(query)]
+        sentences = [self.retreiver.lookup(query, backoff=backoff)]
         # TODO code this
         assert(len(documents) == len(sentences))
         return sentences
@@ -67,8 +67,12 @@ class BasicModel:
         return answer
 
     def answer_query(self, query):
-        self.sentences = self.sentence_retrieval(query, self.documents)
-        self.entity_list = self.entity_extraction(self.sentences)
+        backoff = 0
+        self.entity_list = []
+        while len(entity_list) == 0:
+            self.sentences = self.sentence_retrieval(query, self.documents, backoff=backoff)
+            self.entity_list = self.entity_extraction(self.sentences)
+            backoff += 1
         self.ranked_answers = self.answer_ranking(query, self.entity_list)
         return self.select_answer(self.ranked_answers)
 
