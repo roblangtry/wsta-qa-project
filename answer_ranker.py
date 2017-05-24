@@ -109,7 +109,7 @@ class BasicAnswerRanker(object):
         return rank
 
     def check_tags(self, sentence, closed_words):
-        lsentence = sentence.lower()
+        lsentence = nltk.word_tokenize(sentence.lower())
         result = []
         for word in closed_words:
             if word in lsentence:
