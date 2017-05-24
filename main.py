@@ -31,6 +31,8 @@ def main():
 
     else:
         correct = 0
+        unknown = 0
+        close = 0
         total = 0
         n = len(dev_data)
         m = 1
@@ -47,8 +49,17 @@ def main():
                 total += 1
                 if model_answer == clean_answer(answer):
                     correct += 1
+                elif answer in model.ranked_answers:
+                    close += 1
+                elif model_answer == 'Unknown':
+                    unknown += 1
         print 'Precision on dev data: ',
         print '%.2f' % (float(correct) / float(total) * float(100))
+        print 'Answer found in sentence but not selected: ',
+        print '%.2f' % (float(close) / float(total) * float(100))
+        print 'No answer: ',
+        print '%.2f' % (float(unknown) / float(total) * float(100))
+
 
 
 def load_json_file(filename):

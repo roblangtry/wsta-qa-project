@@ -67,10 +67,10 @@ class BasicModel:
         return answer
 
     def answer_query(self, query):
-        sentences = self.sentence_retrieval(query, self.documents)
-        entity_list = self.entity_extraction(sentences)
-        ranked_answers = self.answer_ranking(query, entity_list)
-        return self.select_answer(ranked_answers)
+        self.sentences = self.sentence_retrieval(query, self.documents)
+        self.entity_list = self.entity_extraction(self.sentences)
+        self.ranked_answers = self.answer_ranking(query, self.entity_list)
+        return self.select_answer(self.ranked_answers)
 
 def clean_answer(answer):
     pass1 = answer.replace('"', '')
