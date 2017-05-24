@@ -27,7 +27,7 @@ def main():
                 query = o2['question']
                 query_id = o2['id']
                 model_answer = model.answer_query(query)
-                answer_file.write('%s,%s\n' % (str(query_id), model_answer))
+                answer_file.write('%s,%s\n' % (str(query_id), model_answer.encode('utf8')))
 
     else:
         correct = 0

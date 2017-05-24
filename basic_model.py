@@ -60,7 +60,7 @@ class BasicModel:
         #                              #
         #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!#
         if len(ranked_answers) > 0:
-            answer = ranked_answers[0]
+            answer = clean_answer(ranked_answers[0])
         else:
             answer = 'Unknown'
         # TODO code this
@@ -72,3 +72,6 @@ class BasicModel:
         ranked_answers = self.answer_ranking(query, entity_list)
         return self.select_answer(ranked_answers)
 
+def clean_answer(answer):
+    pass1 = answer.replace('"', '')
+    return pass1.replace(',', '-COMMA-')
