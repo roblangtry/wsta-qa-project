@@ -70,11 +70,4 @@ class BasicSentenceRetriever:
         try:
             return self.documents[result[0][0]]
         except:
-            print('**************')
-            print('ERROR')
-            print('result:')
-            print(result)
-            print('len(self.documents):')
-            print(len(self.documents))
-            print('**************')
             return self.documents[0]

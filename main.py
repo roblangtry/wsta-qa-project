@@ -12,7 +12,7 @@ def main():
     train_data = load_json_file(TRAIN_FILE)
     #model = BasicModel(get_documents(dev_data), get_answers_and_queries(train_data))
     # now run a simple test
-    if sys.argv[1] == '-t':
+    if len(sys.argv) > 1 and sys.argv[1] == '-t':
         answer_file = open('answers.csv', 'w')
         answer_file.write('id,answer\n')
         n = len(test_data)

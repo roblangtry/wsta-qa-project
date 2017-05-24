@@ -5,15 +5,15 @@ import re
 class BasicModel:
 
     def __init__(self, documents, qas):
-        print 'Building Model ... ',
+        #print 'Building Model ... ',
         self.documents = documents
-        print 'Initialising Sentence Retreiver ... ',
+        #print 'Initialising Sentence Retreiver ... ',
         self.retreiver = BasicSentenceRetriever(documents[0])
-        print 'Initialising Sentence Tagger ... ',
+        #print 'Initialising Sentence Tagger ... ',
         self.tagger = BasicEntityTagger(documents)
-        print 'Initialising Answer Ranker ... ',
+        #print 'Initialising Answer Ranker ... ',
         self.ranker = BasicAnswerRanker(documents, qas)
-        print 'Done!'
+        #print 'Done!'
 
     def sentence_retrieval(self, query, documents):
         # documents will be a list each element of that list will in turn be a list of sentences from a wikipedia article
