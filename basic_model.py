@@ -68,8 +68,8 @@ class BasicModel:
 
     def answer_query(self, query):
         backoff = 0
-        self.entity_list = []
-        while len(entity_list) == 0:
+        self.entity_list = [('',[])]
+        while len(self.entity_list[0][1]) == 0:
             self.sentences = self.sentence_retrieval(query, self.documents, backoff=backoff)
             self.entity_list = self.entity_extraction(self.sentences)
             backoff += 1
