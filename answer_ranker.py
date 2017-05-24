@@ -70,7 +70,7 @@ class BasicAnswerRanker(object):
         try:
             closed_words = self.pos_cache[query]
         except KeyError:
-            text = self.break_query(query.lower())
+            text = nltk.word_tokenize(query.lower())
             try:
                 tagged = nltk.pos_tag(text)
             except LookupError:
@@ -88,24 +88,24 @@ class BasicAnswerRanker(object):
         if len(closed_words) > 0:
             tags_to_check = self.check_tags(entry[0], closed_words)
             if len(tags_to_check) > 0:
-                text = ' '.join(self.break_query(entry[0].lower()))
+                text = ' '.join(nltk.word_tokenize(entry[0].lower()))
                 text = text.split(entry[1].lower())
-                assert(len(text) > 1)
-                for i in range(len(text) - 1):
-                    lower = text[i].split()
-                    low_val = -1
-                    upper = text[i + 1].split()
-                    up_val = -1
-                    for i in range(len(lower)):
-                        if lower[-1 - i] in tags_to_check:
-                            low_val = i + 1
-                    for i in range(len(upper)):
-                        if upper[i] in tags_to_check:
-                            up_val = i + 1
-                    if low_val > 0 and low_val < rank:
-                        rank = low_val
-                    if up_val > 0 and up_val < rank:
-                        rank = up_val
+                if(len(text) > 1):
+                    for i in range(len(text) - 1):
+                        lower = text[i].split()
+                        low_val = -1
+                        upper = text[i + 1].split()
+                        up_val = -1
+                        for i in range(len(lower)):
+                            if lower[-1 - i] in tags_to_check:
+                                low_val = i + 1
+                        for i in range(len(upper)):
+                            if upper[i] in tags_to_check:
+                                up_val = i + 1
+                        if low_val > 0 and low_val < rank:
+                            rank = low_val
+                        if up_val > 0 and up_val < rank:
+                            rank = up_val
         return rank
 
     def check_tags(self, sentence, closed_words):

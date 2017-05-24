@@ -1,4 +1,5 @@
 from nltk.tag import StanfordNERTagger
+import nltk
 import re
 
 class BasicEntityTagger:
@@ -11,8 +12,7 @@ class BasicEntityTagger:
         all_sents = []
         for document in documents:
             all_sents.extend(document)
-        parsed = map(lambda s: self.parse_sentence(s), all_sents)
-        split = map(lambda s: self.split_sentence(s), parsed)
+        split = map(lambda s: nltk.word_tokenize(s), all_sents)
         entities = self.tagger.tag_sents(split)
         parsed_entities = map(lambda e: self.parse_entities(e), entities)
         for i in range(len(all_sents)):
