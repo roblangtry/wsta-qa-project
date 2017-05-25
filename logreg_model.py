@@ -2,9 +2,9 @@ from entity_tagger import BasicEntityTagger
 from answer_ranker import BasicAnswerRanker
 from sentence_retrieval import BasicSentenceRetriever
 import re
-class BasicModel(object):
+class LogRegModel(object):
 
-    def __init__(self, documents, train_data):
+    def __init__(self, documents, trainedRanker):
         #print 'Building Model ... ',
         self.documents = documents
         #print 'Initialising Sentence Retreiver ... ',
@@ -12,16 +12,16 @@ class BasicModel(object):
         #print 'Initialising Sentence Tagger ... ',
         self.tagger = BasicEntityTagger(documents)
         #print 'Initialising Answer Ranker ... ',
-        self.ranker = BasicAnswerRanker(documents, train_data)
+        self.ranker = trainedRanker
         #print 'Done!'
 
     def sentence_retrieval(self, query, documents, backoff=0):
         # documents will be a list each element of that list will in turn be a list of sentences from a wikipedia article
         # query will be a string
         # function should return a single sentence for each wikipedia article
-        sentences = [self.retreiver.lookup(query, backoff=backoff)]
+        sentences = [self.retreiver.lookup(query, backoff=backoff),self.retreiver.lookup(query, backoff=backoff+1),self.retreiver.lookup(query, backoff=backoff+2)]
         # TODO code this
-        assert(len(documents) == len(sentences))
+        #assert(len(documents) == len(sentences))
         return sentences
 
 
@@ -31,11 +31,13 @@ class BasicModel(object):
         # element is a list of entities in that sentence
 
         entity_list = []
+        i = 0
         for sentence in sentences:
+            i += 1
             entities = self.tagger.tag(sentence)
-            entity_list.append((sentence, entities))
+            entity_list.append((sentence, entities, i))
 
-        assert(len(sentences) == len(entity_list))
+        #assert(len(sentences) == len(entity_list))
         return entity_list
 
     def answer_ranking(self, query, entity_list):
