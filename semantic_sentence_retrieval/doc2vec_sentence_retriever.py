@@ -15,12 +15,12 @@ class Doc2VecSentenceRetriever(BasicSentenceRetriever):
         tagged_documents = list()
         self.documents_dict = dict()
 
-        for i, s in enumerate(self.documents[0]):
+        for i, s in enumerate(self.documents):
             tokens = self.preprocess(s)
             tag = self.tag(i)
             d = TaggedDocument(tokens, [tag])
             tagged_documents.append(d)
-            self.documents_dict[tag] = json.dumps(s)
+            self.documents_dict[tag] = s
         self.train(tagged_documents)
 
 
@@ -42,10 +42,15 @@ class Doc2VecSentenceRetriever(BasicSentenceRetriever):
         return 'TAG_%s' % i
 
 
-    def lookup(self, query):
+    def lookup(self, query, backoff=0):
         t = Preprocessor.preprocess_sentence(query)
         v = self.__model.infer_vector(t)
         tuples = self.__model.docvecs.most_similar([v])
         # sentences = [self.documents_dict[t] for t, score in tuples]
-        sentence = self.documents_dict[tuples[0][0]]
+        self.documents_dict[tuples[0][0]]
+        print tuples
+        if len(tuples) > backoff:
+            sentence = self.documents_dict[tuples[backoff][0]]
+            return sentence
+        sentence = self.documents[backoff - len(tuples)]
         return sentence

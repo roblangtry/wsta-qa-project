@@ -1,9 +1,13 @@
 import json
 import sys
 from basic_model import BasicModel, clean_answer
+from final_model import FinalModel
 from answer_ranker import LogisticRegressionRanker
 from logreg_model import LogRegModel
 from probabilistic_sentence_retrieval import ProbabilisticSentenceRetrieverModel
+from doc2vec_model import Doc2VecSentenceRetrieverModel
+from may_model import MayQuestionClassifierModel
+from question_classification import MayQuestionClassifier, RothQuestionsReader
 DEV_FILE = 'data/QA_dev.json'
 TEST_FILE = 'data/QA_test.json'
 TRAIN_FILE = 'data/QA_train.json'
@@ -15,7 +19,10 @@ def main():
     train_data = load_json_file(TRAIN_FILE)
     #model = BasicModel(get_documents(dev_data), get_answers_and_queries(train_data))
     # now run a simple test
-    EnhancedModel = ProbabilisticSentenceRetrieverModel
+    ranker = LogisticRegressionRanker([], train_data)
+    questions_reader = RothQuestionsReader()
+    qclassifier = MayQuestionClassifier(questions_reader)
+    EnhancedModel = Doc2VecSentenceRetrieverModel
     if len(sys.argv) > 1 and sys.argv[1] == '-t':
         answer_file = open('answers.csv', 'w')
         answer_file.write('id,answer\n')
@@ -26,13 +33,13 @@ def main():
             print '/',
             print n
             m += 1
-            model = EnhancedModel([obj['sentences']], train_data)
+            model = FinalModel([obj['sentences']], ranker)
             for o2 in obj['qa']:
                 query = o2['question']
                 query_id = o2['id']
                 model_answer = model.answer_query(query)
                 answer_file.write('%s,%s\n' % (str(query_id), model_answer.encode('utf8')))
-    if len(sys.argv) > 1 and sys.argv[1] == '-bt':
+    elif len(sys.argv) > 1 and sys.argv[1] == '-bt':
         answer_file = open('answers.csv', 'w')
         answer_file.write('id,answer\n')
         n = len(test_data)
@@ -49,7 +56,7 @@ def main():
                 model_answer = model.answer_query(query)
                 answer_file.write('%s,%s\n' % (str(query_id), model_answer.encode('utf8')))
 
-    if len(sys.argv) > 1 and sys.argv[1] == '-e':
+    elif len(sys.argv) > 1 and sys.argv[1] == '-e':
         correct = 0
         unknown = 0
         in_sent = 0
@@ -63,7 +70,8 @@ def main():
             print '/',
             print n
             m += 1
-            model = EnhancedModel([obj['sentences']], train_data)
+            model = MayQuestionClassifierModel([obj['sentences']], train_data, qclassifier)
+            #model = EnhancedModel([obj['sentences']], train_data)
             #model.ranker = ranker
             for o2 in obj['qa']:
                 query = o2['question']

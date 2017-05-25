@@ -50,7 +50,7 @@ class BasicEntityTagger:
         try:
             return self.cache[sentence]
         except KeyError:
-            words = nltk.word_tokenize(parsed_sentence)
+            words = nltk.word_tokenize(sentence)
             entities = self.tagger.tag(words)
             parsed_entities = self.parse_entities(entities)
             self.cache[sentence] = parsed_entities

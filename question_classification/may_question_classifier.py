@@ -5,7 +5,7 @@ from nltk.corpus import wordnet as wn
 class MayQuestionClassifier(QuestionClassifier):
 
     def __init__(self, questions_reader):
-        super(self.__class__, self).__init__(questions_reader)
+        QuestionClassifier.__init__(self, questions_reader)
 
     def features(self, question):
         features = dict()
@@ -52,3 +52,4 @@ class MayQuestionClassifier(QuestionClassifier):
             print "Error reading line: {}".format(question)
 #       Work here is done
         return features
+

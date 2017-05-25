@@ -2,7 +2,14 @@ import nltk, string
 from nltk.corpus import wordnet as wn
 from nltk import MaxentClassifier, NaiveBayesClassifier, DecisionTreeClassifier
 
-
+CONVERT_TAG = {
+    'NUM': 'NUMBER',
+    'HUM': 'PERSON',
+    'DESC': 'OTHER',
+    'ABBR': 'OTHER',
+    'ENTY': 'OTHER',
+    'LOC': 'LOCATION'
+}
 class QuestionClassifier(object):
 
     STOPWORDS = set(nltk.corpus.stopwords.words('english'))
@@ -27,7 +34,7 @@ class QuestionClassifier(object):
 
     def classify(self, question):
         f = self.features(question)
-        return self.__classifier.classify(f)
+        return CONVERT_TAG[self.__classifier.classify(f)]
 
 
     def coarse_prob_classify(self, question):
