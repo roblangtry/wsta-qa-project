@@ -2,6 +2,7 @@ from time import sleep
 import re
 import nltk
 class BasicAnswerRanker(object):
+
     def __init__(self, documents, qas):
         self.classifier = BasicQueryClassifier(documents, qas)
         self.rank_no = 1
@@ -175,4 +176,3 @@ class BasicQueryClassifier:
             if word in query.lower():
                 return tag
         return 'UNKNOWN'
-        

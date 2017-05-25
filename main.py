@@ -28,7 +28,6 @@ def main():
                 query_id = o2['id']
                 model_answer = model.answer_query(query)
                 answer_file.write('%s,%s\n' % (str(query_id), model_answer))
-
     else:
         correct = 0
         total = 0
