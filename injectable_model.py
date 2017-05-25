@@ -6,14 +6,14 @@ import re
 
 class InjectableModel(BasicModel):
 
-    def __init__(self, documents, qas, retreiver=False, tagger=False, ranker=False):
+    def __init__(self,documents,qas,sentence_retreiver=False,ranker=False,tagger=False):
         print 'Building Model ... ',
         self.documents = documents
 
 #       Sentence Retreiver
         print 'Initialising Sentence Retreiver ... ',
-        if retreiver:
-            self.retreiver = retriever
+        if sentence_retreiver:
+            self.retreiver = sentence_retreiver
         else:
             self.retreiver = BasicSentenceRetriever(documents[0])
 

@@ -8,8 +8,8 @@ from preprocessor import Preprocessor
 # class Doc2VecSentenceRetriever(SemanticSentenceRetriever):
 class Doc2VecSentenceRetriever(BasicSentenceRetriever):
 
-    def __init__(self, documents, qas):
-        super(self.__class__, self).__init__(documents, qas)
+    def __init__(self, documents):
+        super(self.__class__, self).__init__(documents)
 
     def _build_index(self):
         tagged_documents = list()
@@ -42,7 +42,10 @@ class Doc2VecSentenceRetriever(BasicSentenceRetriever):
         return 'TAG_%s' % i
 
 
-    def lookup(query):
+    def lookup(self, query):
         t = Preprocessor.preprocess_sentence(query)
         v = self.__model.infer_vector(t)
-        return self.__model.docvecs.most_similar([v])
+        tuples = self.__model.docvecs.most_similar([v])
+        # sentences = [self.documents_dict[t] for t, score in tuples]
+        sentence = self.documents_dict[tuples[0][0]]
+        return sentence

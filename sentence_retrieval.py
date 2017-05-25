@@ -32,7 +32,7 @@ def query_vsm(query, index, k=10):
     return accumulator.most_common(k)
 
 
-class BasicSentenceRetriever:
+class BasicSentenceRetriever(object):
     def __init__(self, documents):
         self.documents = documents
         self._build_index()

@@ -1,6 +1,7 @@
 import json
 import sys
 from basic_model import BasicModel
+from injectable_model import InjectableModel
 
 from question_classification import RothQuestionsReader
 # from question_classification import StanfordQuestionsReader
@@ -45,8 +46,9 @@ def main():
 #           Create a ranker so we can set its classifier
             ranker = BasicAnswerRanker(obj['sentences'], [])
             ranker.classifier = question_classifier
-            retriever = Doc2VecSentenceRetriever([obj['sentences']], [])
-            model = InjectableModel([obj['sentences']], [], ranker=ranker, retriever=retriever)
+            sentence_retreiver = Doc2VecSentenceRetriever([obj['sentences']])
+            # model = InjectableModel([obj['sentences']], retriever=retriever)
+            model = InjectableModel([obj['sentences']],[],ranker=ranker, sentence_retreiver=sentence_retreiver)
             for o2 in obj['qa']:
                 query = o2['question']
                 query_id = o2['id']
