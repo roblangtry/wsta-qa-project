@@ -2,6 +2,8 @@ from entity_tagger import BasicEntityTagger
 from answer_ranker import BasicAnswerRanker
 from sentence_retrieval import BasicSentenceRetriever
 import re
+
+
 class BasicModel(object):
 
     def __init__(self, documents, train_data):
@@ -79,3 +81,4 @@ class BasicModel(object):
 def clean_answer(answer):
     pass1 = answer.replace('"', '')
     return pass1.replace(',', '-COMMA-')
+
