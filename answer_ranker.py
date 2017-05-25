@@ -2,8 +2,8 @@ from time import sleep
 import re
 import nltk
 class BasicAnswerRanker(object):
-    def __init__(self, documents, qas):
-        self.classifier = BasicQueryClassifier(documents, qas)
+    def __init__(self, documents, train_data):
+        self.classifier = BasicQueryClassifier(documents, train_data)
         self.rank_no = 1
         self.pos_cache = {}
 
@@ -116,22 +116,19 @@ class BasicAnswerRanker(object):
                 result.append(word)
         return result
 
-    def break_query(self, query):
-        parsed_query = re.sub('[,.[\]();:?!]', ' ', query)
-        parsed_query = re.sub('[^a-zA-Z0-9 -]', '', parsed_query)
-        return parsed_query.split()
+
 def content_words_appear_in_query(entry, query):
     content_words = map(lambda x: x[1], entry[1])
     for word in content_words:
-        if word not in query:
-            return False
-    return True
+        if word in query:
+            return True
+    return False
 
 class BasicQueryClassifier:
-    def __init__(self, documents, qas):
+    def __init__(self, documents, train_data):
         # Tags are: PERSON, LOCATION, NUMBER, OTHER
         self.documents = documents
-        self.qas = qas
+        self.train_data = train_data
         self.yes = 0
         self.no = 0
         self.rules = [
@@ -141,32 +138,38 @@ class BasicQueryClassifier:
             ('who','PERSON'),
             ('name', 'PERSON'),
             ('where', 'LOCATION'),
-            ('located?', 'LOCATION'),
+            ('located', 'LOCATION'),
             ('when was','NUMBER'),
             ('how many','NUMBER'),
-            ('what year','NUMBER'),
-            ('which year','NUMBER'),
+            ('year','NUMBER'),
+            ('decade','NUMBER'),
             ('percentage', 'NUMBER'),
             ('date', 'NUMBER'),
             ('when', 'NUMBER'),
             ('how much', 'NUMBER'),
-            ('in what century did', 'NUMBER'),
-            ('in which century did', 'NUMBER'),
+            ('century', 'NUMBER'),
             ('what is the average', 'NUMBER'),
-            ('what countries', 'LOCATION'),
-            ('what country', 'LOCATION'),
-            ('which person', 'PERSON'),
-            ('what person', 'PERSON'),
-            ('which time', 'NUMBER'),
-            ('what time', 'NUMBER'),
-            ('which countries', 'LOCATION'),
-            ('which country', 'LOCATION'),
+            ('countries', 'LOCATION'),
+            ('country', 'LOCATION'),
+            ('city', 'LOCATION'),
+            ('time', 'NUMBER'),
             ('territory', 'LOCATION'),
             ('country', 'LOCATION'),
             ('countries', 'LOCATION'),
             ('how', 'OTHER'),
-            ('what', 'OTHER'),
-            ('which','OTHER'),
+            ('term for', 'OTHER'),
+            ('type of', 'OTHER'),
+            ('population', 'NUMBER'),
+            ('what group', 'OTHER'),
+            ('what did', 'OTHER'),
+            ('stand for', 'OTHER'),
+            ('what kind of', 'OTHER'),
+            ('an example of', 'OTHER'),
+            ('what types of', 'OTHER'),
+            ('the purpose of', 'OTHER'),
+            ('used for?', 'OTHER'),
+            ('what language', 'OTHER'),
+            ('was the title', 'OTHER'),
         ]
     def classify(self, query):
         for rule in self.rules:
@@ -174,5 +177,5 @@ class BasicQueryClassifier:
             tag = rule[1]
             if word in query.lower():
                 return tag
-        return 'UNKNOWN'
+        return 'OTHER'
         

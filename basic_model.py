@@ -4,7 +4,7 @@ from sentence_retrieval import BasicSentenceRetriever
 import re
 class BasicModel:
 
-    def __init__(self, documents, qas):
+    def __init__(self, documents, train_data):
         #print 'Building Model ... ',
         self.documents = documents
         #print 'Initialising Sentence Retreiver ... ',
@@ -12,7 +12,7 @@ class BasicModel:
         #print 'Initialising Sentence Tagger ... ',
         self.tagger = BasicEntityTagger(documents)
         #print 'Initialising Answer Ranker ... ',
-        self.ranker = BasicAnswerRanker(documents, qas)
+        self.ranker = BasicAnswerRanker(documents, train_data)
         #print 'Done!'
 
     def sentence_retrieval(self, query, documents, backoff=0):

@@ -33,8 +33,6 @@ for q, a in aq:
     total += 1
     tag = classifier.classify(q)
     if tag == 'UNKNOWN':
-        if 'which' in q.lower():
-            print q.encode('utf8')
         if(len(q.split()) >= 1):
             w = q.split()[-1]
             eindex[w.lower()] += 1
@@ -64,16 +62,16 @@ print 'Percent tagged ->',
 print float(tagged) / float(total) * float(100),
 print '%'
 print 'UNIGRAM'
-for w in index.most_common(40):
+for w in index.most_common(80):
     print w
 print 'BIGRAM'
-for w in index2.most_common(30):
+for w in index2.most_common(60):
     print w
 print 'TRIGRAM'
-for w in index3.most_common(20):
+for w in index3.most_common(40):
     print w
 print 'QUADGRAM'
-for w in index4.most_common(20):
+for w in index4.most_common(40):
     print w
 print 'endian UNIGRAM'
 for w in eindex.most_common(20):
