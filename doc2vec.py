@@ -1,3 +1,7 @@
+## Author: Abhishek Sirohi
+##
+##
+
 import gensim
 import os
 import collections
@@ -60,8 +64,6 @@ def train_corpus(sents, tokens_only=False):
         else:
             yield gensim.models.doc2vec.TaggedDocument(gensim.utils.simple_preprocess(' '.join(i)), [k])
 
-pt = "data/pretrained_WE.txt" #None if use without pretrained embeddings
-
 train = list(train_corpus(sents))
 print(len(train))
 model = gensim.models.Doc2Vec(size=size, window=window, min_count=minimum, sample=threshold, workers=worker, hs=0, dm=dm, negative=neg_size, dbow_words=1, dm_concat=1,iter=epoch)
@@ -82,12 +84,7 @@ for doc_id in range(len(train)):
 doc_id = random.randint(0, len(test))
 inf_vec = model.infer_vector(test[doc_id])
 sims = model.docvecs.most_similar([inf_vec], topn=len(model.docvecs))
-
-# Compare and print the most/median/least similar documents from the train corpus
-print('Test Document ({}): «{}»\n'.format(doc_id, ' '.join(test[doc_id])))
-print(u'SIMILAR/DISSIMILAR DOCS PER MODEL %s:\n' % model)
-for label, index in [('MOST', 0)]:
-    print(u'%s %s: «%s»\n' % (label, sims[index],' '.join(train[sims[index][0]].words)))
+# Now we'll check for every question in the training file
 
 results = []
 for i in range(0,len(test)):
@@ -97,7 +94,7 @@ for i in range(0,len(test)):
     for label, index in [('MOST', 0)]:
         results.append((' '.join(test[i]),' '.join(train[sims[index][0]].words)))
 
-#List of tuple of all the questions and their respective predicted answers by this doc2vec model.
+#Result is the list of tuple of all the questions and their respective predicted answers by this doc2vec model.
 #(question,prediction)
         
 print(results)
