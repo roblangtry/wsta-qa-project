@@ -3,6 +3,7 @@ import sys
 from basic_model import BasicModel, clean_answer
 from answer_ranker import LogisticRegressionRanker
 from logreg_model import LogRegModel
+from probabilistic_sentence_retrieval import ProbabilisticSentenceRetrieverModel
 DEV_FILE = 'data/QA_dev.json'
 TEST_FILE = 'data/QA_test.json'
 TRAIN_FILE = 'data/QA_train.json'
@@ -14,7 +15,7 @@ def main():
     train_data = load_json_file(TRAIN_FILE)
     #model = BasicModel(get_documents(dev_data), get_answers_and_queries(train_data))
     # now run a simple test
-    EnhancedModel = LogRegModel
+    EnhancedModel = ProbabilisticSentenceRetrieverModel
     if len(sys.argv) > 1 and sys.argv[1] == '-t':
         answer_file = open('answers.csv', 'w')
         answer_file.write('id,answer\n')
@@ -56,14 +57,14 @@ def main():
         total = 0
         n = len(dev_data)
         m = 1
-        ranker = LogisticRegressionRanker([], train_data)
+        #ranker = LogisticRegressionRanker([], train_data)
         for obj in dev_data:
             print m,
             print '/',
             print n
             m += 1
-            model = EnhancedModel([obj['sentences']], ranker)
-            model.ranker = ranker
+            model = EnhancedModel([obj['sentences']], train_data)
+            #model.ranker = ranker
             for o2 in obj['qa']:
                 query = o2['question']
                 answer = o2['answer']
