@@ -10,7 +10,7 @@ import json
 import nltk
 import preprocess as pre
 
-file = 'data/QA_train.json'
+file = 'QA_train.json'
 sent_segmenter = nltk.data.load('tokenizers/punkt/english.pickle')
 
 size = 300

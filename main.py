@@ -8,9 +8,9 @@ from probabilistic_sentence_retrieval import ProbabilisticSentenceRetrieverModel
 from doc2vec_model import Doc2VecSentenceRetrieverModel
 from may_model import MayQuestionClassifierModel
 from question_classification import MayQuestionClassifier, RothQuestionsReader
-DEV_FILE = 'data/QA_dev.json'
-TEST_FILE = 'data/QA_test.json'
-TRAIN_FILE = 'data/QA_train.json'
+DEV_FILE = 'QA_dev.json'
+TEST_FILE = 'QA_test.json'
+TRAIN_FILE = 'QA_train.json'
 
 
 def main():

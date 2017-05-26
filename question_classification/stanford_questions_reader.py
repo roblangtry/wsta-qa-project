@@ -5,9 +5,9 @@ import json
 class StanfordQuestionsReader(QuestionsReader):
 
 #   Note: Should run on training data, not dev, but dev's smaller, so yeah...
-    __train = 'data/QA_dev.json'
-    # __train = 'data/QA_train.json'
-    __test = 'data/QA_dev.json'
+    __train = 'QA_dev.json'
+    # __train = 'QA_train.json'
+    __test = 'QA_dev.json'
 
     def __init__(self):
         super(self.__class__, self).__init__()

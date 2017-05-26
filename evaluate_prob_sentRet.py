@@ -3,7 +3,7 @@ import probabilistic_sentence_retrieval as model
 
 
 def evaluate():
-    data = pre.data_from_json('data/QA_train.json')
+    data = pre.data_from_json('QA_train.json')
     totalQ = 0
     totalC = 0
 

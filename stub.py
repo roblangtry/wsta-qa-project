@@ -13,9 +13,9 @@ from semantic_sentence_retrieval import LiSentenceRetriever
 from answer_ranker import BasicAnswerRanker
 
 
-DEV_FILE = 'data/QA_dev.json'
-TEST_FILE = 'data/QA_test.json'
-TRAIN_FILE = 'data/QA_train.json'
+DEV_FILE = 'QA_dev.json'
+TEST_FILE = 'QA_test.json'
+TRAIN_FILE = 'QA_train.json'
 
 def main():
 #   questions_reader gets the training data for Question Classification

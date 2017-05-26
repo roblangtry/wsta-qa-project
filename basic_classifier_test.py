@@ -1,7 +1,7 @@
 from answer_ranker import BasicQueryClassifier
 import json
 from collections import Counter
-TRAIN_FILE = 'data/QA_train.json'
+TRAIN_FILE = 'QA_train.json'
 def get_answers_and_queries(data):
     qa = []
     for document in data:
