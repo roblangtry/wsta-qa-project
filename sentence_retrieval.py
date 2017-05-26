@@ -15,6 +15,7 @@ def extract_term_freqs(doc):
             tfs[stemmer.stem(token.lower())] += 1
     return tfs
 
+# Computing the frequencies
 def compute_doc_freqs(doc_term_freqs):
     dfs = Counter()
     for tfs in doc_term_freqs.values():
@@ -22,7 +23,7 @@ def compute_doc_freqs(doc_term_freqs):
             dfs[term] += 1
     return dfs
 
-
+# Method for querying
 def query_vsm(query, index, k=10):
     accumulator = Counter()
     for term in query:
@@ -36,7 +37,8 @@ class BasicSentenceRetriever(object):
     def __init__(self, documents):
         self.documents = documents
         self._build_index()
-
+        
+    #Method to build index
     def _build_index(self):
         doc_term_freqs = {}
         for sentence in self.documents:
