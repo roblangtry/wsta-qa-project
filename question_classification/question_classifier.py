@@ -54,4 +54,6 @@ class QuestionClassifier(object):
                 # print "{}. {} : {} : {}".format(i, label, l, question)
             # except:
             #     print "Error reading question: {}".format(question)
-        print "Question classifications: {} out of {} correct ({}%%)".format(correct, total, (float(correct) / float(total) * float(100)))
+        if total == 0:
+            total = 1
+        print "Question classifications: {} out of {} correct (~{:.2f}%%)".format(correct, total, (float(correct) / float(total) * float(100)))

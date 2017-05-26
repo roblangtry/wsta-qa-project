@@ -3,11 +3,12 @@ import sys
 from basic_model import BasicModel
 from injectable_model import InjectableModel
 
-from question_classification import RothQuestionsReader
+from question_classification import LiQuestionsReader
 # from question_classification import StanfordQuestionsReader
 from question_classification import MayQuestionClassifier
 # from question_classification import HuangQuestionClassifier
 from semantic_sentence_retrieval import Doc2VecSentenceRetriever
+from semantic_sentence_retrieval import LiSentenceRetriever
 
 from answer_ranker import BasicAnswerRanker
 
@@ -18,7 +19,7 @@ TRAIN_FILE = 'data/QA_train.json'
 
 def main():
 #   questions_reader gets the training data for Question Classification
-    questions_reader = RothQuestionsReader() # Li and Roth data
+    questions_reader = LiQuestionsReader() # Li and Roth data
     # questions_reader = StanfordQuestionsReader()  # Use Stanford NER to read this project's training data
                                                     # This will take ages to train
 #   Inject the reader
@@ -46,7 +47,8 @@ def main():
 #           Create a ranker so we can set its classifier
             ranker = BasicAnswerRanker(obj['sentences'], [])
             ranker.classifier = question_classifier
-            sentence_retreiver = Doc2VecSentenceRetriever([obj['sentences']])
+            # sentence_retreiver = Doc2VecSentenceRetriever([obj['sentences']])
+            sentence_retreiver = LiSentenceRetriever([obj['sentences']])
             # model = InjectableModel([obj['sentences']], retriever=retriever)
             model = InjectableModel([obj['sentences']],[],ranker=ranker, sentence_retreiver=sentence_retreiver)
             for o2 in obj['qa']:

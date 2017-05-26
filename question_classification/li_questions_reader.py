@@ -3,7 +3,7 @@ import nltk
 nltk.download('qc')
 from nltk.corpus import qc
 
-class RothQuestionsReader(QuestionsReader):
+class LiQuestionsReader(QuestionsReader):
 
     __train = qc.abspath('train.txt')
     __test = qc.abspath('test.txt')
