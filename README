@@ -1,0 +1,19 @@
+The file to run our project is main.py
+The 4 modes for running the main file are:
+
+    To run the baseline model on the dev set
+    python main.py
+
+    To run the baseline model on the test set and write answers.csv
+    python main.py -bt
+
+    To run the enhanced model on the dev set
+    python main.py -e
+
+    To run the enhanced model on the test set and write answers.csv
+    python main.py -t
+
+********************
+Also included is a file called basic_classifier_test.py that was used for tuning the basic query classifier
+this can be run by just calling it so :
+    python basic_classifier_test.py
